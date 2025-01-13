@@ -1,25 +1,33 @@
 #!/bin/bash
-# Array of wallpaper files with correct file URIs
-wallpapers=(/home/username/Pictures/*.jpg /home/username/Pictures/*.png /home/adminmyusername/Pictures/*.jpeg)
-
-# Initialize index
-index=0
 
 # Infinite loop to change wallpaper every 5 seconds
 while true; do
-  # Use file:// prefix to properly format URI for gsettings
-  wallpaper_uri="file://${wallpapers[$index]}"
+  # Dynamically rebuild the list of wallpapers each iteration
+  wallpapers=(/home/adminmyusername/Pictures/*.{jpg,jpeg,png,webp,gif,bmp,tiff,tif,heic,heif,ico,raw,pcx,tga,xcf})
   
-  # Log the change
-  echo "$(date) - Changing wallpaper to: $wallpaper_uri" >> ~/wallpaper_change.log
+  # Filter the list to include only files that exist
+  wallpapers=($(for w in "${wallpapers[@]}"; do [ -f "$w" ] && echo "$w"; done))
   
-  # Change the wallpaper for both light and dark themes
-  gsettings set org.gnome.desktop.background picture-uri "$wallpaper_uri"
-  gsettings set org.gnome.desktop.background picture-uri-dark "$wallpaper_uri"  # Set for dark theme
-  
-  # Update the index to cycle through the wallpapers
-  ((index=(index+1)%${#wallpapers[@]}))
-  
-  # Wait for 30 seconds before changing again
-  sleep 30
+  # Check if the wallpapers array is empty
+  if [ ${#wallpapers[@]} -eq 0 ]; then
+    # Log and fallback to a default wallpaper if no valid images are found
+    echo "$(date) - No valid wallpapers found in /home/adminmyusername/Pictures. Falling back to default." >> ~/wallpaper_change.log
+    default_wallpaper="/usr/share/backgrounds/Province_of_the_south_of_france_by_orbitelambda.jpg"  # Replace with a valid default path
+    gsettings set org.gnome.desktop.background picture-uri "file://$default_wallpaper"
+    gsettings set org.gnome.desktop.background picture-uri-dark "file://$default_wallpaper"  # Set for dark theme
+  else
+    # Randomly select a wallpaper from the array
+    random_index=$((RANDOM % ${#wallpapers[@]}))
+    wallpaper_uri="file://${wallpapers[$random_index]}"
+    
+    # Log the change
+    # echo "$(date) - Changing wallpaper to: $wallpaper_uri" >> ~/wallpaper_change.log
+    
+    # Change the wallpaper for both light and dark themes
+    gsettings set org.gnome.desktop.background picture-uri "$wallpaper_uri"
+    gsettings set org.gnome.desktop.background picture-uri-dark "$wallpaper_uri"
+  fi
+
+  # Wait for 60 seconds before changing again
+  sleep 60
 done
