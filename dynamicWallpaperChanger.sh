@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Infinite loop to change wallpaper every 5 seconds
+# Infinite loop to change wallpaper every 60 seconds
 while true; do
   # Dynamically rebuild the list of wallpapers each iteration
-  wallpapers=(/home/adminmyusername/Pictures/*.{jpg,jpeg,png,webp,gif,bmp,tiff,tif,heic,heif,ico,raw,pcx,tga,xcf})
+  wallpapers=(/home/USERNAME/Pictures/*.{jpg,jpeg,png,webp,gif,bmp,tiff,tif,heic,heif,ico,raw,pcx,tga,xcf})
   
   # Filter the list to include only files that exist
   wallpapers=($(for w in "${wallpapers[@]}"; do [ -f "$w" ] && echo "$w"; done))
@@ -11,7 +11,7 @@ while true; do
   # Check if the wallpapers array is empty
   if [ ${#wallpapers[@]} -eq 0 ]; then
     # Log and fallback to a default wallpaper if no valid images are found
-    echo "$(date) - No valid wallpapers found in /home/adminmyusername/Pictures. Falling back to default." >> ~/wallpaper_change.log
+    echo "$(date) - No valid wallpapers found in /home/USERNAME/Pictures. Falling back to default." >> ~/wallpaper_change.log
     default_wallpaper="/usr/share/backgrounds/Province_of_the_south_of_france_by_orbitelambda.jpg"  # Replace with a valid default path
     gsettings set org.gnome.desktop.background picture-uri "file://$default_wallpaper"
     gsettings set org.gnome.desktop.background picture-uri-dark "file://$default_wallpaper"  # Set for dark theme
