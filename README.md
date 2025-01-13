@@ -3,5 +3,5 @@
 *Remember to set the script file to "Run As Program", either through right clicking the script and toggling "Run As Program"*<br><br>
 *or via the CLI Terminal:* **~$ chmod +x ./PATH_TO_YOUR_SCRIPT/dynamicwallpaperchanger.sh**
 <br><br><br><br>
-Read the Bible
+Read the Bible, KJV or MEV
 
