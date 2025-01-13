@@ -1,6 +1,6 @@
 #!/bin/bash
 # Array of wallpaper files with correct file URIs
-wallpapers=(/home/adminmyusername/Pictures/*.jpg /home/adminmyusername/Pictures/*.png /home/adminmyusername/Pictures/*.jpeg)
+wallpapers=(/home/username/Pictures/*.jpg /home/username/Pictures/*.png /home/adminmyusername/Pictures/*.jpeg)
 
 # Initialize index
 index=0
